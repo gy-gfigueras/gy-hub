@@ -7,11 +7,9 @@ import {
 
 export function AnimateAvatar({
   src,
-  fallback,
   tooltip,
 }: {
   src: string;
-  fallback: string;
   tooltip: string;
 }) {
   return (

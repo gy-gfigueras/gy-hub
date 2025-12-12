@@ -35,16 +35,8 @@
       "power": "2",
       "toughness": "5",
       "colors": [],
-      "color_identity": [
-        "B",
-        "G",
-        "R",
-        "U",
-        "W"
-      ],
-      "keywords": [
-        "Devoid"
-      ],
+      "color_identity": ["B", "G", "R", "U", "W"],
+      "keywords": ["Devoid"],
       "all_parts": [
         {
           "object": "related_card",
@@ -86,19 +78,12 @@
         "premodern": "not_legal",
         "predh": "not_legal"
       },
-      "games": [
-        "paper",
-        "arena",
-        "mtgo"
-      ],
+      "games": ["paper", "arena", "mtgo"],
       "reserved": false,
       "game_changer": false,
       "foil": true,
       "nonfoil": true,
-      "finishes": [
-        "nonfoil",
-        "foil"
-      ],
+      "finishes": ["nonfoil", "foil"],
       "oversized": false,
       "promo": false,
       "reprint": false,
@@ -117,16 +102,11 @@
       "rarity": "mythic",
       "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
       "artist": "Alex Konstad",
-      "artist_ids": [
-        "58b2a57c-50ca-4047-b4e7-efb28cb22851"
-      ],
+      "artist_ids": ["58b2a57c-50ca-4047-b4e7-efb28cb22851"],
       "illustration_id": "f5410963-0e71-46e7-bef9-99edb184c2fe",
       "border_color": "black",
       "frame": "2015",
-      "frame_effects": [
-        "legendary",
-        "devoid"
-      ],
+      "frame_effects": ["legendary", "devoid"],
       "security_stamp": "oval",
       "full_art": false,
       "textless": false,

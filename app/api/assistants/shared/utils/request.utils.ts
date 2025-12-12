@@ -14,7 +14,7 @@ export async function validateRequest(req: Request): Promise<AssistantRequest> {
       prompt,
       topic: body?.topic,
     };
-  } catch (error) {
+  } catch {
     throw new Error("Invalid request body");
   }
 }

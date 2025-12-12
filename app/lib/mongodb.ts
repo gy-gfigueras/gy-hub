@@ -1,15 +1,14 @@
 // /lib/mongodb.ts
-import { MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 
 const uri = process.env.MONGODB_URI;
-const options: any = {};
+const options: MongoClientOptions = {};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 // Evita múltiples conexiones en desarrollo (hot reload)
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 

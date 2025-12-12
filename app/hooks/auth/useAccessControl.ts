@@ -16,7 +16,7 @@ export function useAccessControl(user: UserProfile | null) {
     }
 
     return user.roles.some((role) =>
-      ALLOWED_ROLES.includes(role.toUpperCase() as any)
+      (ALLOWED_ROLES as readonly string[]).includes(role.toUpperCase())
     );
   }, [user]);
 

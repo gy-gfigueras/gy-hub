@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface UseChatStateProps {
   endpoint: string;
-  onSuccess?: (response: any) => void;
+  onSuccess?: (response: Record<string, unknown>) => void;
   onError?: (error: string) => void;
 }
 
@@ -13,7 +13,10 @@ export function useChatState({
 }: UseChatStateProps) {
   const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const [response, setResponse] = React.useState<any>(null);
+  const [response, setResponse] = React.useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [copied, setCopied] = React.useState(false);
   const [selectedTopic, setSelectedTopic] = React.useState("");

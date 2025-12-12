@@ -1,8 +1,8 @@
 ---
-applyTo: '**'
+applyTo: "**"
 ---
-## Instrucciones de Refactorización y Buenas Prácticas
 
+## Instrucciones de Refactorización y Buenas Prácticas
 
 Siempre sigue estas directrices al generar código, responder preguntas o revisar cambios:
 

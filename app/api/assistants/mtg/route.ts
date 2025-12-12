@@ -247,7 +247,11 @@ export async function POST(req: Request) {
 // Helper para generar explicación de carta con Gemini
 async function generateCardExplanation(
   card: ScryfallCard,
-  ai: any
+  ai: {
+    generateContent: (
+      prompt: string
+    ) => Promise<{ response: { text: () => string } }>;
+  }
 ): Promise<string> {
   const cardInfo = `
 Nombre: ${card.name}
@@ -264,7 +268,7 @@ Colores: ${card.colors?.join(", ") || "Incoloro"}
 Set: ${card.set_name}
 Legalidades: ${
     Object.entries(card.legalities)
-      .filter(([_, v]) => v === "legal")
+      .filter(([, v]) => v === "legal")
       .map(([k]) => k)
       .join(", ") || "Ninguna"
   }

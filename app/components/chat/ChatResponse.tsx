@@ -33,7 +33,7 @@ export function ChatResponse({
       if (typeof response === "string" && response.trim().startsWith("{")) {
         return JSON.parse(response);
       }
-    } catch (e) {
+    } catch {
       // No es JSON válido
     }
     return null;
