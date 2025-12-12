@@ -2,8 +2,11 @@ import { GravityStarsBackground } from "@/components/animate-ui/components/backg
 import "./globals.css";
 
 export const metadata = {
-  title: "Gestor IA — D&D · MTG",
-  description: "Dashboard con Gemini y Animate UI",
+  title: "GY Coding AI Hub",
+  description: "Personal AI assistants for coding and more.",
+   icons: {
+    icon: '/gy-logo.ico',
+  },
 };
 
 export default function RootLayout({
