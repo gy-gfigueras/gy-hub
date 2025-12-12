@@ -10,88 +10,244 @@ La aplicación cuenta con control de acceso basado en roles (RBAC) donde solo us
 
 ## 🏗️ Arquitectura del Proyecto
 
+El proyecto sigue principios de **Clean Code**, **SOLID**, y **Domain-Driven Design** con una estructura completamente modular y escalable.
+
 ```
 gy-hub/
-├── app/
+├── app/                          # 🆕 Todo el código de aplicación centralizado
 │   ├── api/                      # API Routes de Next.js
 │   │   ├── auth/                 # Autenticación con Auth0
-│   │   │   ├── [auth0]/route.ts  # Callback de Auth0
-│   │   │   └── me/route.ts       # Endpoint de usuario actual
-│   │   ├── assistants/           # 🆕 Asistentes de IA organizados por dominio
-│   │   │   ├── shared/           # Infraestructura compartida
-│   │   │   │   ├── types/        # Tipos base (assistant, gemini, response)
-│   │   │   │   ├── services/     # Servicios compartidos
-│   │   │   │   │   ├── gemini.service.ts      # Cliente Gemini centralizado
+│   │   │   ├── [auth0]/route.ts # Callback de Auth0
+│   │   │   └── me/route.ts      # Endpoint de usuario actual
+│   │   ├── assistants/          # 🆕 Asistentes de IA (Domain-Driven Design)
+│   │   │   ├── shared/          # Infraestructura compartida
+│   │   │   │   ├── types/       # Tipos base (assistant, gemini, response)
+│   │   │   │   ├── services/    # Servicios compartidos
+│   │   │   │   │   ├── gemini.service.ts      # Cliente Gemini (Singleton)
 │   │   │   │   │   ├── file-loader.service.ts # Carga de archivos MD
 │   │   │   │   │   └── mongodb.service.ts     # Cliente MongoDB
-│   │   │   │   ├── constants/    # Prompts del sistema, mensajes de error
-│   │   │   │   └── utils/        # Validación de requests, formateo
-│   │   │   ├── gycoding/         # Asistente general GYCODING
-│   │   │   │   ├── route.ts      # Handler de ruta (thin layer)
-│   │   │   │   ├── service.ts    # Lógica de negocio
-│   │   │   │   └── constants.ts  # Prompts específicos
-│   │   │   ├── api-docs/         # Documentación de APIs (MongoDB)
-│   │   │   │   ├── route.ts
-│   │   │   │   ├── service.ts
-│   │   │   │   ├── types.ts      # ApiDoc interface
-│   │   │   │   └── constants.ts
-│   │   │   ├── code-review/      # Revisión de código GitHub
-│   │   │   │   ├── route.ts
-│   │   │   │   ├── service.ts
-│   │   │   │   ├── types.ts      # GitHub types
-│   │   │   │   └── constants.ts
-│   │   │   ├── heralds/          # Heralds of Chaos
-│   │   │   │   ├── route.ts
-│   │   │   │   ├── service.ts
-│   │   │   │   └── constants.ts
-│   │   │   ├── stormlight/       # Stormlight Archive RPG
-│   │   │   │   ├── route.ts
-│   │   │   │   ├── service.ts
-│   │   │   │   └── constants.ts
-│   │   │   └── mtg/              # Magic: The Gathering
-│   │   │       ├── route.ts
-│   │   │       ├── service.ts    # 🆕 Lógica de negocio separada
-│   │   │       └── types.ts      # ScryfallCard interface
-│   │   └── metadata/route.ts     # Metadata de bases de datos
-│   ├── components/               # Componentes React de UI
-│   │   ├── AnimateAvatar.tsx     # Avatar animado con AnimateUI
-│   │   ├── ChatPanel.tsx         # Panel principal del chat
-│   │   ├── ChatResponse.tsx      # Renderizado de respuestas con markdown
-│   │   ├── MagicCard.tsx         # 🆕 Componente para cartas MTG
-│   │   ├── TopicSelector.tsx     # Selector de subtabs
-│   │   ├── TabTriggerItem.tsx    # Item de tab personalizado
-│   │   └── UserMenu.tsx          # Menú de usuario con avatar y logout
-│   ├── globals.css               # Estilos globales
-│   ├── layout.tsx                # Layout raíz
-│   └── page.tsx                  # Página principal con RBAC
-├── components/                   # Librería de componentes AnimateUI
-│   └── animate-ui/               # Componentes de UI animados
-├── hooks/                        # Hooks personalizados
-│   ├── useChatState.ts           # Estado global del chat
-│   ├── use-controlled-state.tsx  # State management helpers
-│   ├── use-data-state.tsx        # Data state management
-│   └── use-is-in-view.tsx        # Intersection observer hook
-├── lib/                          # Librerías y utilidades
-│   ├── auth0.ts                  # Configuración de Auth0
-│   ├── auth-helpers.ts           # Helpers de autenticación
-│   ├── mongodb.ts                # Cliente de MongoDB
-│   ├── permissions.ts            # Sistema de permisos y roles
-│   ├── tabs-config.tsx           # Configuración de tabs y endpoints
-│   ├── utils.ts                  # Utilidades generales
-│   └── get-strict-context.tsx    # Context API helper
+│   │   │   │   ├── constants/   # Prompts del sistema, mensajes
+│   │   │   │   └── utils/       # Validación de requests, helpers
+│   │   │   ├── gycoding/        # Dominio: GYCODING
+│   │   │   │   ├── route.ts     # Handler (thin layer)
+│   │   │   │   ├── service.ts   # Lógica de negocio
+│   │   │   │   └── constants.ts # Prompts específicos
+│   │   │   ├── api-docs/        # Dominio: Documentación APIs
+│   │   │   ├── code-review/     # Dominio: Revisión de código
+│   │   │   ├── heralds/         # Dominio: Heralds of Chaos
+│   │   │   ├── stormlight/      # Dominio: Stormlight RPG
+│   │   │   └── mtg/             # Dominio: Magic: The Gathering
+│   │   └── metadata/route.ts    # Metadata de bases de datos
+│   ├── components/              # 🆕 Componentes organizados por dominio
+│   │   ├── cards/               # Componentes de cartas MTG
+│   │   │   ├── MagicCard.tsx    # Renderiza cartas con estilos
+│   │   │   └── ManaCost.tsx     # Símbolos de mana
+│   │   ├── chat/                # Componentes del chat
+│   │   │   ├── ChatPanel.tsx    # Panel principal
+│   │   │   ├── ChatResponse.tsx # Renderizado de respuestas
+│   │   │   └── TopicSelector.tsx
+│   │   ├── home/                # Componentes de la página principal
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── HomeLayout.tsx
+│   │   │   ├── HomeHeader.tsx
+│   │   │   └── states/          # Estados de autenticación
+│   │   │       ├── LoadingState.tsx
+│   │   │       ├── UnauthenticatedState.tsx
+│   │   │       ├── UnauthorizedState.tsx
+│   │   │       └── AuthenticatedContent.tsx
+│   │   └── ui/                  # Componentes UI reutilizables
+│   │       ├── AnimateAvatar.tsx
+│   │       ├── IconRenderer.tsx # Renderizado centralizado de iconos
+│   │       ├── RenderIf.tsx     # Renderizado condicional
+│   │       ├── TabTriggerItem.tsx
+│   │       ├── UserMenu.tsx
+│   │       └── SvgIcon.tsx
+│   ├── config/                  # 🆕 Configuraciones de la aplicación
+│   │   └── tabs.tsx             # Configuración de tabs/asistentes
+│   ├── hooks/                   # 🆕 Custom hooks
+│   │   ├── auth/                # Hooks de autenticación
+│   │   │   ├── useAuth.ts       # Hook compuesto (facade)
+│   │   │   ├── useUser.ts       # Estado del usuario
+│   │   │   └── useAccessControl.ts # Control de acceso RBAC
+│   │   ├── useChatState.ts      # Estado global del chat
+│   │   ├── use-controlled-state.tsx
+│   │   ├── use-data-state.tsx
+│   │   └── use-is-in-view.tsx
+│   ├── lib/                     # 🆕 Librerías y utilidades
+│   │   ├── auth/                # Sistema de autenticación
+│   │   │   ├── constants.ts     # Roles permitidos
+│   │   │   ├── helpers.ts       # Helpers de Auth0
+│   │   │   └── permissions.ts   # Sistema de permisos RBAC
+│   │   ├── utils/               # Utilidades generales
+│   │   │   ├── cn.ts            # Merge de clases Tailwind
+│   │   │   └── context.tsx      # Helper para Context API
+│   │   ├── auth0.ts             # Cliente Auth0
+│   │   └── mongodb.ts           # Cliente MongoDB (Singleton)
+│   ├── services/                # 🆕 Servicios de lógica de negocio
+│   │   └── auth/
+│   │       └── authService.ts   # Servicio de autenticación
+│   ├── globals.css              # Estilos globales
+│   ├── layout.tsx               # Layout raíz
+│   └── page.tsx                 # Página principal (11 líneas)
+├── components/                  # Librería AnimateUI (terceros)
+│   └── animate-ui/              # Componentes de UI animados
 ├── public/
-│   └── files/                    # Archivos estáticos (MD para contexto de IA)
-│       ├── heralds-of-chaos-story.md
-│       ├── STORMLIGHT_RPG_HANDBOOK-1.md
-│       ├── STORMLIGHT_RPG_HANDBOOK-2.md
-│       ├── STORMLIGHT_RPG_HANDBOOK-3.md
-│       ├── STORMLIGHT_RPG_WORLD_GUIDE-1.md
-│       └── STORMLIGHT_RPG_WORLD_GUIDE-2.md
-├── middleware.ts                 # Middleware de Auth0
-├── components.json               # Configuración de shadcn/ui
-├── next.config.ts                # Configuración de Next.js
+│   ├── files/                   # Archivos MD para contexto de IA
+│   ├── icons/                   # Iconos y SVGs
+│   └── img/                     # Imágenes
+├── .github/
+│   └── instructions/
+│       └── proyect.md.instructions.md # 🆕 Guías de código
+├── middleware.ts                # Middleware de Auth0
+├── eslint.config.mjs            # Configuración ESLint
+├── components.json              # Configuración shadcn/ui
+├── next.config.ts
 ├── package.json
 └── tsconfig.json
+```
+
+---
+
+## 📐 Principios de Arquitectura
+
+### Clean Architecture & SOLID
+
+El proyecto sigue estrictamente:
+
+1. **Single Responsibility**: Cada archivo tiene una única responsabilidad
+2. **Open/Closed**: Extensible sin modificar código existente
+3. **Liskov Substitution**: Interfaces consistentes
+4. **Interface Segregation**: Contratos pequeños y específicos
+5. **Dependency Inversion**: Dependencias apuntan a abstracciones
+
+### Separation of Concerns
+
+Cada asistente sigue el patrón:
+
+```typescript
+/api/assistants/[domain]/
+├── route.ts      # Handler HTTP (validación, routing)
+├── service.ts    # Lógica de negocio (pure functions)
+├── types.ts      # Tipos específicos del dominio
+└── constants.ts  # Configuración, prompts, constantes
+```
+
+### Patrón de Constantes para Estilos
+
+Los componentes con muchos estilos Tailwind usan el patrón de constantes:
+
+```typescript
+const STYLES = {
+  container: "flex flex-col gap-4",
+  title: "text-2xl font-bold",
+  // ...
+} as const;
+
+return <div className={STYLES.container}>...</div>;
+```
+
+**Ventajas:**
+
+- Estilos centralizados y fáciles de mantener
+- JSX más limpio y legible
+- Autocompletado con TypeScript
+- Fácil de cambiar temas
+
+---
+
+## 🎯 Estructura de Componentes
+
+### Organización por Dominio
+
+Los componentes están organizados por **feature/domain**, no por tipo:
+
+```
+app/components/
+├── cards/     # Todo relacionado con cartas MTG
+├── chat/      # Todo relacionado con el chat
+├── home/      # Todo relacionado con la página principal
+│   └── states/ # Estados de autenticación
+└── ui/        # Componentes reutilizables genéricos
+```
+
+### Principio de Componentes
+
+Cada componente complejo debe:
+
+1. Tener su propia carpeta si tiene subcomponentes
+2. Separar lógica de presentación
+3. Usar custom hooks para lógica reutilizable
+4. Documentarse con JSDoc cuando sea complejo
+5. Exportar tipos de props explícitos
+
+### Hooks Personalizados
+
+Los hooks encapsulan lógica reutilizable:
+
+```typescript
+// ❌ Mal: Lógica duplicada en componentes
+function ComponentA() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    /* fetch user */
+  }, []);
+  // ...
+}
+
+// ✅ Bien: Hook reutilizable
+function useUser() {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  // ... lógica centralizada
+  return { user, isLoading };
+}
+```
+
+---
+
+## 📝 Guías de Código
+
+### TypeScript Estricto
+
+```typescript
+// ❌ Evitar
+const data: any = fetchData();
+
+// ✅ Preferir
+interface UserData {
+  id: string;
+  name: string;
+}
+const data: UserData = fetchData();
+```
+
+### Nombres Descriptivos
+
+```typescript
+// ❌ Evitar
+const d = new Date();
+const u = getU();
+
+// ✅ Preferir
+const currentDate = new Date();
+const currentUser = getCurrentUser();
+```
+
+### Funciones Pequeñas
+
+```typescript
+// ❌ Evitar: Función grande con muchas responsabilidades
+function processUserDataAndSaveToDatabase(user) {
+  // 100 líneas de código...
+}
+
+// ✅ Preferir: Funciones pequeñas y específicas
+function validateUser(user: User): boolean { /* ... */ }
+function saveToDatabase(user: User): Promise<void> { /* ... */ }
+function processUser(user: User): void {
+  if (!validateUser(user)) throw new Error("Invalid user");
+  await saveToDatabase(user);
+}
 ```
 
 ---
