@@ -1,4 +1,4 @@
-import { getSession } from "@auth0/nextjs-auth0/server";
+import { auth0 } from "../auth0";
 import { NextResponse } from "next/server";
 import { UserRole, Permission, hasPermission } from "./permissions";
 
@@ -12,7 +12,7 @@ export interface AuthUser {
 
 // Helper para obtener usuario autenticado con su rol
 export async function getAuthUser(): Promise<AuthUser | null> {
-  const session = await getSession();
+  const session = await auth0.getSession();
 
   if (!session?.user) {
     return null;
@@ -25,8 +25,8 @@ export async function getAuthUser(): Promise<AuthUser | null> {
 
   return {
     sub: session.user.sub,
-    email: session.user.email,
-    name: session.user.name,
+    email: session.user.email || "",
+    name: session.user.name || "Usuario",
     picture: session.user.picture,
     role,
   };

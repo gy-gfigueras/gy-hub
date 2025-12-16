@@ -309,7 +309,6 @@ export function ChatResponse({
           {imageData.userImage ? (
             <AnimateAvatar
               src={imageData.userImage}
-              fallback={assistantName}
               tooltip={assistantName}
             />
           ) : assistantAvatar && assistantAvatar.startsWith("http") ? (

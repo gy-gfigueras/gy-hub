@@ -1,8 +1,20 @@
 import * as React from "react";
+import { ScryfallCard } from "@/app/api/assistants/mtg/types";
+
+type ChatResponse =
+  | string
+  | {
+      type: string;
+      card?: ScryfallCard;
+      content?: string;
+      text?: string;
+      explanation?: string;
+      totalFound?: number;
+    };
 
 interface UseChatStateProps {
   endpoint: string;
-  onSuccess?: (response: Record<string, unknown>) => void;
+  onSuccess?: (response: ChatResponse) => void;
   onError?: (error: string) => void;
 }
 
@@ -13,10 +25,7 @@ export function useChatState({
 }: UseChatStateProps) {
   const [loading, setLoading] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const [response, setResponse] = React.useState<Record<
-    string,
-    unknown
-  > | null>(null);
+  const [response, setResponse] = React.useState<ChatResponse | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [copied, setCopied] = React.useState(false);
   const [selectedTopic, setSelectedTopic] = React.useState("");

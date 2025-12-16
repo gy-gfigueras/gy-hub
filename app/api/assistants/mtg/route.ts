@@ -247,11 +247,7 @@ export async function POST(req: Request) {
 // Helper para generar explicación de carta con Gemini
 async function generateCardExplanation(
   card: ScryfallCard,
-  ai: {
-    generateContent: (
-      prompt: string
-    ) => Promise<{ response: { text: () => string } }>;
-  }
+  ai: GoogleGenAI
 ): Promise<string> {
   const cardInfo = `
 Nombre: ${card.name}
